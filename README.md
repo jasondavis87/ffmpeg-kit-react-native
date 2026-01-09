@@ -1,41 +1,35 @@
-# FFmpegKit for React Native
+# FFmpegKit for React Native (Bundled Frameworks)
 
-> **Fork Notice:** This is a modified fork of [jdarshan5/ffmpeg-kit-react-native](https://github.com/jdarshan5/ffmpeg-kit-react-native) that uses local FFmpeg framework files instead of CocoaPods/Maven dependencies. See [Local Framework Setup](#local-framework-setup) below.
+> **Fork Notice:** This is a modified fork of [jdarshan5/ffmpeg-kit-react-native](https://github.com/jdarshan5/ffmpeg-kit-react-native) with FFmpeg frameworks **bundled directly in the package** via Git LFS. No additional setup required - just install and use.
 
-## Local Framework Setup
+## Installation
 
-This fork expects FFmpeg frameworks to be placed in your app directory, **sibling to `node_modules/`**:
-
-```
-your-app/
-├── ios/
-├── android/
-├── ffmpeg/
-│   ├── ios/
-│   │   ├── ffmpegkit.xcframework/
-│   │   ├── libavcodec.xcframework/
-│   │   ├── libavdevice.xcframework/
-│   │   ├── libavfilter.xcframework/
-│   │   ├── libavformat.xcframework/
-│   │   ├── libavutil.xcframework/
-│   │   ├── libswresample.xcframework/
-│   │   └── libswscale.xcframework/
-│   └── android/
-│       └── ffmpeg-kit.aar
-├── node_modules/
-│   └── ffmpeg-kit-react-native/  ← this package
-└── ...
+```bash
+npm install github:jasondavis87/ffmpeg-kit-react-native-local
+# or
+yarn add github:jasondavis87/ffmpeg-kit-react-native-local
 ```
 
-### How it works
+For iOS, run `pod install` in your ios directory.
 
-**iOS:** The podspec uses `File.expand_path('../../ffmpeg/ios', __dir__)` to resolve the absolute path at `pod install` time. From the package location in `node_modules/ffmpeg-kit-react-native/`, going up two directories reaches your app root, then into `ffmpeg/ios/`.
+## Bundled Frameworks
 
-**Android:** The build.gradle uses `../../ffmpeg/android/` relative to the module directory to find AAR files.
+This package includes pre-built FFmpeg frameworks:
 
-### Obtaining FFmpeg frameworks
+**iOS** (`ios/Frameworks/`):
+- ffmpegkit.xcframework
+- libavcodec.xcframework
+- libavformat.xcframework
+- libavutil.xcframework
+- libavfilter.xcframework
+- libavdevice.xcframework
+- libswresample.xcframework
+- libswscale.xcframework
 
-Download pre-built frameworks from [FFmpegKit Releases](https://github.com/arthenica/ffmpeg-kit/releases) or build them yourself using the [ffmpeg-kit build scripts](https://github.com/arthenica/ffmpeg-kit).
+**Android** (`android/libs/`):
+- ffmpeg-kit.aar
+
+The frameworks are LGPL-compliant, built with VideoToolbox (iOS) and MediaCodec (Android) hardware acceleration, without GPL codecs.
 
 ---
 
