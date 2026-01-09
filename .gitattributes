@@ -2,4 +2,3 @@
 # specific for windows script files
 *.bat text eol=crlf
 *.xcframework/** filter=lfs diff=lfs merge=lfs -text
-*.aar filter=lfs diff=lfs merge=lfs -text
