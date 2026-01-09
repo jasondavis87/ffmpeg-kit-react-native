@@ -131,4 +131,7 @@ dependencies {
 
   // Bundled FFmpeg AAR - use absolute path with api scope for runtime availability
   api files("$projectDir/libs/ffmpeg-kit.aar")
+
+  // Transitive dependency required by ffmpeg-kit (not auto-included with local AAR)
+  api 'com.arthenica:smart-exception-java:0.2.1'
 }
