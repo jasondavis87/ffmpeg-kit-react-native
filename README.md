@@ -4,11 +4,11 @@
 
 ## Local Framework Setup
 
-This fork expects FFmpeg frameworks to be placed in your app directory, **sibling to the `ios/` folder**:
+This fork expects FFmpeg frameworks to be placed in your app directory, **sibling to `node_modules/`**:
 
 ```
 your-app/
-├── ios/                          ← Xcode's $(SRCROOT) points here
+├── ios/
 ├── android/
 ├── ffmpeg/
 │   ├── ios/
@@ -23,14 +23,15 @@ your-app/
 │   └── android/
 │       └── ffmpeg-kit.aar
 ├── node_modules/
+│   └── ffmpeg-kit-react-native/  ← this package
 └── ...
 ```
 
 ### How it works
 
-**iOS:** The podspec uses `$(SRCROOT)/../ffmpeg/ios/` which resolves at Xcode build time. This works reliably with EAS/Expo builds and hoisted node_modules because `$(SRCROOT)` always points to the iOS project directory.
+**iOS:** The podspec uses `File.expand_path('../../ffmpeg/ios', __dir__)` to resolve the absolute path at `pod install` time. From the package location in `node_modules/ffmpeg-kit-react-native/`, going up two directories reaches your app root, then into `ffmpeg/ios/`.
 
-**Android:** The build.gradle uses a path relative to the module directory to find AAR files.
+**Android:** The build.gradle uses `../../ffmpeg/android/` relative to the module directory to find AAR files.
 
 ### Obtaining FFmpeg frameworks
 
