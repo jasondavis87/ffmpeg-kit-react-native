@@ -11,19 +11,12 @@ buildscript {
 
 apply plugin: 'com.android.library'
 
-static def safePackageName(String packageName) {
-  packageName.replace("-lts", "")
-}
-
-def safePackageVersion(String packageName) {
-  def version = project.properties['ffmpegKit.android.main.version']
-  def ltsVersion = project.properties['ffmpegKit.android.lts.version']
-  packageName.contains("-lts") ? ltsVersion + ".LTS" : version
-}
-
 def safeExtGet(String prop, String fallback) {
   rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
 }
+
+// Path to local FFmpeg AAR files (relative to this module's directory)
+def ffmpegLibsDir = new File(projectDir, '../../ffmpeg/android')
 
 android {
   if (project.android.hasProperty("namespace")) {
@@ -33,7 +26,7 @@ android {
   compileSdkVersion 33
 
   defaultConfig {
-    minSdkVersion safeExtGet('ffmpegKitPackage', 'https').contains("-lts") ? 16 : 24
+    minSdkVersion 24
     targetSdkVersion 33
     versionCode 602
     versionName "6.0.2"
@@ -54,8 +47,13 @@ android {
 }
 
 repositories {
-  mavenCentral()
   google()
+  mavenCentral()
+
+  // Local FFmpeg AAR files from consuming app's ffmpeg/android/ directory
+  flatDir {
+    dirs ffmpegLibsDir
+  }
 
   def found = false
   def defaultDir = null
@@ -125,5 +123,7 @@ repositories {
 
 dependencies {
   api 'com.facebook.react:react-native:+'
-  implementation 'com.arthenica:ffmpeg-kit-' + safePackageName(safeExtGet('ffmpegKitPackage', 'https')) + ':' + safePackageVersion(safeExtGet('ffmpegKitPackage', 'https'))
+
+  // Local FFmpeg AAR files - include all AAR files from ffmpeg/android/
+  implementation fileTree(dir: ffmpegLibsDir, include: ['*.aar'])
 }

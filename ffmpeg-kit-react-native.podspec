@@ -20,6 +20,7 @@ Pod::Spec.new do |s|
   s.dependency "React-Core"
 
   s.source_files = '**/FFmpegKitReactNativeModule.m', '**/FFmpegKitReactNativeModule.h'
-  
-  s.dependency 'ffmpeg-kit-full-gpl', "~> 6.0.2"
+
+  # Local FFmpeg frameworks from consuming app's ffmpeg/ios/ directory
+  s.vendored_frameworks = Dir[File.join(__dir__, '..', '..', 'ffmpeg', 'ios', '*.xcframework')]
 end

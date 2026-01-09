@@ -1,5 +1,34 @@
 # FFmpegKit for React Native
 
+> **Fork Notice:** This is a modified fork of [jdarshan5/ffmpeg-kit-react-native](https://github.com/jdarshan5/ffmpeg-kit-react-native) that uses local FFmpeg framework files instead of CocoaPods/Maven dependencies. See [Local Framework Setup](#local-framework-setup) below.
+
+## Local Framework Setup
+
+This fork expects FFmpeg frameworks to be placed in your app's root directory:
+
+```
+your-app/
+├── ffmpeg/
+│   ├── ios/
+│   │   ├── ffmpegkit.xcframework
+│   │   ├── libavcodec.xcframework
+│   │   ├── libavdevice.xcframework
+│   │   ├── libavfilter.xcframework
+│   │   ├── libavformat.xcframework
+│   │   ├── libavutil.xcframework
+│   │   ├── libswresample.xcframework
+│   │   └── libswscale.xcframework
+│   └── android/
+│       └── ffmpeg-kit.aar
+├── node_modules/
+│   └── ffmpeg-kit-react-native/
+└── ...
+```
+
+The podspec and build.gradle are configured to automatically find frameworks at `../../ffmpeg/` relative to the installed package.
+
+---
+
 ### 1. Features
 - Includes both `FFmpeg` and `FFprobe`
 - Supports
@@ -145,51 +174,11 @@ The following table shows all package names and their respective API levels, iOS
 
 (*) - Main `https` package is the default package
 
-#### 2.2 Enabling Packages
+#### 2.2 Selecting a Package (This Fork)
 
-Installing `ffmpeg-kit-react-native` enables the `https` package by default. It is possible to enable other
-packages using the instructions below.
+This fork uses local framework files instead of CocoaPods/Maven dependencies. To use a specific package variant, download the corresponding frameworks from [FFmpegKit Releases](https://github.com/arthenica/ffmpeg-kit/releases) and place them in your app's `ffmpeg/ios/` and `ffmpeg/android/` directories.
 
-##### 2.2.1 Enabling a Package on Android
-
-- Edit `android/build.gradle` file and add the package name in `ext.ffmpegKitPackage` variable.
-
-    ```gradle
-    ext {
-        ffmpegKitPackage = "<package name>"
-    }
-
-    ```
-
-##### 2.2.2 Enabling a Package on iOS
-
-- Edit `ios/Podfile` file and add the package name as `subspec`. After that run `pod install` again.
-
-    ```ruby
-    pod 'ffmpeg-kit-react-native', :subspecs => ['<package name>'], :podspec => '../node_modules/ffmpeg-kit-react-native/ffmpeg-kit-react-native.podspec'
-    ```
-
-- Note that if you have `use_native_modules!` in your `Podfile`, specifying a `subspec` may cause the following error.
-  You can fix it by defining `ffmpeg-kit-react-native` dependency before `use_native_modules!` in your `Podfile`.
-
-  ```
-  [!] There are multiple dependencies with different sources for `ffmpeg-kit-react-native` in `Podfile`:
-
-  - ffmpeg-kit-react-native (from `../node_modules/ffmpeg-kit-react-native`)
-  - ffmpeg-kit-react-native/video (from `../node_modules/ffmpeg-kit-react-native/ffmpeg-kit-react-native.podspec`)
-  ```
-
-#### 2.3 Enabling LTS Releases
-
-In order to install the `LTS` variant, install the `https-lts` package using instructions in `2.2` or append `-lts` to
-the package name you are using.
-
-#### 2.4 LTS Releases
-
-`ffmpeg-kit-react-native` is published in two variants: `Main Release` and `LTS Release`. Both releases share the
-same source code but is built with different settings (Architectures, API Level, iOS Min SDK, etc.). Refer to the
-[LTS Releases](https://github.com/arthenica/ffmpeg-kit/wiki/LTS-Releases) wiki page to see how they differ from each
-other.
+The package variant is determined by which framework files you provide, not by configuration.
 
 ### 3. Using
 
